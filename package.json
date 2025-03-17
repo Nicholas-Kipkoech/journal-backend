@@ -7,6 +7,9 @@
     "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "Nicholas Kipkoech",
   "license": "ISC",
@@ -14,17 +17,18 @@
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.13.10",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^6.5.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "prisma": "^6.5.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@types/node": "^22.13.10",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
   }
 }
