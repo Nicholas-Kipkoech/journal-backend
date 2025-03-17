@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --ext ts --exec ts-node src/app.ts",
     "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nicholas Kipkoech",
   "license": "ISC",
   "description": "",
   "dependencies": {
@@ -20,6 +21,10 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^6.5.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
