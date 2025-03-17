@@ -6,10 +6,10 @@ import {
 import { AuthController } from "../controllers/authController";
 import { authenticateUser, authorizeRole } from "../middleware/authMiddleware";
 
-const router = Router();
+const authRouter = Router();
 
-router.post("/register", registerValidation, AuthController.register);
-router.post("/login", loginValidation, AuthController.login);
-router.get("/profile", authenticateUser, AuthController.getMe);
+authRouter.post("/register", registerValidation, AuthController.register);
+authRouter.post("/login", loginValidation, AuthController.login);
+authRouter.get("/profile", authenticateUser, AuthController.getMe);
 
-export default router;
+export default authRouter;

@@ -2,6 +2,7 @@ import { prisma } from "../../prisma/client";
 import { LoginDto, UserDto } from "../shared";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/jwtHelper";
+import { checkPassword, hashPassword } from "../utils/passwordHelper";
 
 export class AuthService {
   static async registerUser(userDto: UserDto) {
@@ -17,7 +18,7 @@ export class AuthService {
     });
 
     // hash user password
-    const hashedPassword = await bcrypt.hash(userDto.password, 10);
+    const hashedPassword = await hashPassword(userDto.password);
     return prisma.user.create({
       data: {
         firstName: userDto.firstName,
@@ -42,7 +43,7 @@ export class AuthService {
     if (!user) throw new Error("Invalid email entered");
 
     // check if password is valid
-    const isMatch = await bcrypt.compare(loginDto.password, user.password);
+    const isMatch = await checkPassword(loginDto.password, user.password);
     if (!isMatch) throw new Error("Invalid password entered");
 
     // generate JWT token for logged in user
@@ -68,5 +69,26 @@ export class AuthService {
         role: true,
       },
     });
+  }
+
+  // user profile or preferences update
+
+  static async updateUser(userId: number, userData: Partial<UserDto>) {
+    try {
+      const hashedpassword = await hashPassword(userData.password);
+
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          password: hashedpassword,
+        },
+      });
+      return updatedUser;
+    } catch (error) {
+      throw new Error("Error updating user profile " + error.message);
+    }
   }
 }

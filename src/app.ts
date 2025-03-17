@@ -1,9 +1,12 @@
 import { config } from "dotenv";
 import express from "express";
 import { prisma } from "../prisma/client";
+import authRouter from "./routes/authRoutes";
 const app = express();
 
 config();
+
+app.use(express.json());
 
 const connectDB = async () => {
   try {
@@ -20,6 +23,8 @@ const PORT = process.env.PORT;
 app.get("/", (req, res) => {
   res.send("hello world");
 });
+
+app.use("/auth", authRouter);
 
 connectDB().then(() => {
   app.listen(PORT, () =>
