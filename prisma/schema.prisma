@@ -7,10 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Role table for different type of users in the system
+// Role table for different types of users in the system
 model Role {
   id          Int     @id @default(autoincrement())
-  uuid        String  @default(uuid())
+  uuid        String  @unique @default(uuid())
   name        String  @unique
   description String?
   users       User[]
@@ -18,7 +18,7 @@ model Role {
 
 model User {
   id        Int       @id @default(autoincrement())
-  uuid      String?   @unique @default(uuid())
+  uuid      String    @unique @default(uuid())
   firstName String
   lastName  String
   email     String    @unique
@@ -37,23 +37,32 @@ model Category {
   color             String?
   icon              String?
   journals          Journal[]           @relation("JournalCategories")
-  journalCategories JournalCategories[]
+  JournalCategories JournalCategories[]
+}
+
+model Tag {
+  id          Int           @id @default(autoincrement())
+  uuid        String        @unique @default(uuid())
+  name        String        @unique
+  journals    Journal[]     @relation("JournalTags")
+  JournalTags JournalTags[]
 }
 
 model Journal {
   id                Int                 @id @default(autoincrement())
-  uuid              String?             @unique @default(uuid())
+  uuid              String              @unique @default(uuid())
   title             String
   content           String
   wordCount         Int?
   sentiment         String?
-  tags              String[]
   user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   categories        Category[]          @relation("JournalCategories")
+  tags              Tag[]               @relation("JournalTags")
   journalCategories JournalCategories[]
+  journalTags       JournalTags[]
 }
 
 model JournalCategories {
@@ -63,4 +72,13 @@ model JournalCategories {
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@id([journalId, categoryId]) // Composite primary key
+}
+
+model JournalTags {
+  journalId Int
+  tagId     Int
+  journal   Journal @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([journalId, tagId]) // Composite primary key
 }
