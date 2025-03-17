@@ -10,6 +10,12 @@ export class AuthService {
       where: { email: userDto.email },
     });
     if (existingUser) throw new Error("User already exists");
+
+    // find role or default to 'User'
+    const role = await prisma.role.findUnique({
+      where: { name: userDto.roleName || "User" },
+    });
+
     // hash user password
     const hashedPassword = await bcrypt.hash(userDto.password, 10);
     return prisma.user.create({
@@ -17,7 +23,7 @@ export class AuthService {
         firstName: userDto.firstName,
         lastName: userDto.lastName,
         password: hashedPassword,
-        roleId: userDto.roleId,
+        roleId: role.id,
         email: userDto.email,
       },
     });

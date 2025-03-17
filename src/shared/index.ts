@@ -5,7 +5,7 @@ export interface UserDto {
   lastName: string;
   email: string;
   password: string;
-  roleId: number;
+  roleName: string;
 }
 
 export interface LoginDto {
