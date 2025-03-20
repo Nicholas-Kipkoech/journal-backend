@@ -6,6 +6,7 @@ import collectionRouter from "./routes/collectionRoutes";
 import journalRouter from "./routes/journalRoutes";
 import analyticsRouter from "./routes/analyticsRoutes";
 import cors from "cors";
+import { setupSwagger } from "./swagger";
 const app = express();
 
 config();
@@ -14,6 +15,11 @@ app.use(cors());
 
 app.use(express.json());
 
+//setup swagger
+
+setupSwagger(app);
+
+// connect to pg database
 const connectDB = async () => {
   try {
     await prisma.$connect();
