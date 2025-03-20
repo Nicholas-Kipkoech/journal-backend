@@ -3,82 +3,62 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" // Change to "mysql" if using MySQL
   url      = env("DATABASE_URL")
 }
 
-// Role table for different types of users in the system
-model Role {
-  id          Int     @id @default(autoincrement())
-  uuid        String  @unique @default(uuid())
-  name        String  @unique
-  description String?
-  users       User[]
-}
-
 model User {
-  id        Int       @id @default(autoincrement())
-  uuid      String    @unique @default(uuid())
-  firstName String
-  lastName  String
-  email     String    @unique
-  password  String
-  role      Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId    Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  journals  Journal[]
+  id             String         @id @default(uuid())
+  firstName      String?
+  lastName       String?
+  email          String         @unique
+  password       String
+  role           Role           @default(USER)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  journalEntries JournalEntry[]
+  collections    Collection[]
 }
 
-model Category {
-  id                Int                 @id @default(autoincrement())
-  uuid              String              @unique @default(uuid())
-  name              String              @unique
-  color             String?
-  icon              String?
-  journals          Journal[]           @relation("JournalCategories")
-  JournalCategories JournalCategories[]
+model JournalEntry {
+  id             String          @id @default(uuid())
+  title          String
+  content        String          @db.Text
+  mood           String // References moods.ts constants
+  moodScore      Int // Numeric value from moods.ts for analytics
+  moodImageUrl   String? // Pixabay image URL
+  collectionId   String?
+  collection     Collection?     @relation(fields: [collectionId], references: [id])
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  journalInsight JournalInsight?
 }
 
-model Tag {
-  id          Int           @id @default(autoincrement())
-  uuid        String        @unique @default(uuid())
-  name        String        @unique
-  journals    Journal[]     @relation("JournalTags")
-  JournalTags JournalTags[]
+model Collection {
+  id             String         @id @default(uuid())
+  name           String         @unique
+  description    String?
+  user           User           @relation(fields: [userId], references: [id])
+  journalEntries JournalEntry[]
+  userId         String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
-model Journal {
-  id                Int                 @id @default(autoincrement())
-  uuid              String              @unique @default(uuid())
-  title             String
-  content           String
-  wordCount         Int?
-  sentiment         String?
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            Int
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  categories        Category[]          @relation("JournalCategories")
-  tags              Tag[]               @relation("JournalTags")
-  journalCategories JournalCategories[]
-  journalTags       JournalTags[]
+enum Role {
+  USER
+  ADMIN
 }
 
-model JournalCategories {
-  journalId  Int
-  categoryId Int
-  journal    Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@id([journalId, categoryId]) // Composite primary key
-}
-
-model JournalTags {
-  journalId Int
-  tagId     Int
-  journal   Journal @relation(fields: [journalId], references: [id], onDelete: Cascade)
-  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@id([journalId, tagId]) // Composite primary key
+model JournalInsight {
+  id           String       @id @default(uuid())
+  entryId      String       @unique
+  sentiment    Float? // e.g., -1 to 1 for sentiment analysis
+  wordCount    Int
+  themes       String[] // List of detected themes
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  journalEntry JournalEntry @relation(fields: [entryId], references: [id])
 }

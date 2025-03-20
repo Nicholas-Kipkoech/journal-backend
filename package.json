@@ -7,9 +7,6 @@
     "start": "nodemon --ext ts --exec ts-node src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
   "keywords": [],
   "author": "Nicholas Kipkoech",
   "license": "ISC",
