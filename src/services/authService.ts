@@ -1,6 +1,5 @@
 import { prisma } from "../../prisma/client";
 import { LoginDto, UserDto } from "../shared";
-import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/jwtHelper";
 import { checkPassword, hashPassword } from "../utils/passwordHelper";
 
@@ -12,11 +11,6 @@ export class AuthService {
     });
     if (existingUser) throw new Error("User already exists");
 
-    // find role or default to 'User'
-    const role = await prisma.role.findUnique({
-      where: { name: userDto.roleName || "User" },
-    });
-
     // hash user password
     const hashedPassword = await hashPassword(userDto.password);
     return prisma.user.create({
@@ -24,7 +18,6 @@ export class AuthService {
         firstName: userDto.firstName,
         lastName: userDto.lastName,
         password: hashedPassword,
-        roleId: role.id,
         email: userDto.email,
       },
     });
@@ -47,7 +40,7 @@ export class AuthService {
     if (!isMatch) throw new Error("Invalid password entered");
 
     // generate JWT token for logged in user
-    const token = generateToken(user.id, user.roleId);
+    const token = generateToken(user.id, user.email);
     return {
       token,
       user: { id: user.id, email: user.email, firstName: user.firstName },
@@ -58,7 +51,7 @@ export class AuthService {
    * @param userId user id
    * @returns user
    */
-  static async getUser(userId: number) {
+  static async getUser(userId: string) {
     return prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -73,10 +66,9 @@ export class AuthService {
 
   // user profile or preferences update
 
-  static async updateUser(userId: number, userData: Partial<UserDto>) {
+  static async updateUser(userId: string, userData: Partial<UserDto>) {
     try {
       const hashedpassword = await hashPassword(userData.password);
-
       const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: {
