@@ -5,9 +5,12 @@ import authRouter from "./routes/authRoutes";
 import collectionRouter from "./routes/collectionRoutes";
 import journalRouter from "./routes/journalRoutes";
 import analyticsRouter from "./routes/analyticsRoutes";
+import cors from "cors";
 const app = express();
 
 config();
+
+app.use(cors());
 
 app.use(express.json());
 
