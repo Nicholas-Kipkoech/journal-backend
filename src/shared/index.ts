@@ -20,3 +20,8 @@ export interface CustomRequest extends Request {
     role: string;
   };
 }
+
+export interface CollectionDto {
+  name: string;
+  description?: string;
+}
