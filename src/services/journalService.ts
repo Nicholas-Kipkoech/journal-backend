@@ -2,17 +2,15 @@ import { getMoodById, MOODS } from "./../utils/mood";
 import { prisma } from "../../prisma/client";
 import { JournalDto } from "../shared";
 import { getPixabayImage } from "../utils/pixabay";
+import { checkUser } from "../utils/checkUser";
 
 // Database logic and crud ops
 export class JournalService {
   static async addJournal(userId: string, journal: JournalDto) {
     const { title, content, collectionId, mood, moodQuery } = journal;
-    // find user before creating a journal
-    const user = await prisma.user.findUnique({ where: { id: userId } });
 
-    if (!user) {
-      throw new Error("No user found");
-    }
+    // find user before creating a journal
+    await checkUser(userId);
 
     const _mood = MOODS[mood.toUpperCase()];
     if (!_mood) throw new Error("Invalid mood");
@@ -25,7 +23,7 @@ export class JournalService {
         mood: _mood.id,
         moodScore: _mood.score,
         moodImageUrl: moodImageUrl,
-        userId: user.id,
+        userId: userId,
         collectionId: collectionId || null,
       },
     });
@@ -36,13 +34,9 @@ export class JournalService {
 
   static async getAllJournalEntries(userId: string, collectionId?: string) {
     // check if user exists
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-
-    if (!user) {
-      throw new Error("No user found");
-    }
+    await checkUser(userId);
     const where = {
-      userId: user.id,
+      userId: userId,
       // If collectionId is explicitly null, get unorganized entries
       // If it's undefined, get all entries
       ...(collectionId === "unorganized"
@@ -75,16 +69,12 @@ export class JournalService {
 
   static async getJournalEntryById(userId: string, journalId: string) {
     // check if user exists
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-
-    if (!user) {
-      throw new Error("No user found");
-    }
+    await checkUser(userId);
 
     const journalEntry = await prisma.journalEntry.findUnique({
       where: {
         id: journalId,
-        userId: user.id,
+        userId: userId,
       },
       include: {
         collection: {
@@ -99,5 +89,30 @@ export class JournalService {
       throw new Error("journal entry not found");
     }
     return journalEntry;
+  }
+
+  // delete journal entry
+
+  static async deleteJournalEntry(userId: string, journalId: string) {
+    await checkUser(userId);
+
+    const journalEntry = await prisma.journalEntry.findFirst({
+      where: {
+        id: journalId,
+        userId,
+      },
+    });
+    // check if it exists before you delete
+    if (!journalEntry) {
+      throw new Error("journal entry not found!!");
+    }
+
+    // otherwise delete
+
+    await prisma.journalEntry.delete({
+      where: {
+        id: journalId,
+      },
+    });
   }
 }
