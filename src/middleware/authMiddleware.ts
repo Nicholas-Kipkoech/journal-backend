@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../prisma/client";
+
+interface TokenPayload extends JwtPayload {
+  userId: string;
+  email: string;
+}
 
 export const authenticateUser = async (
   req: Request,
@@ -11,10 +16,9 @@ export const authenticateUser = async (
   if (!token) res.status(401).json({ message: "Unauthorized" });
 
   try {
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      include: { role: true },
     });
 
     if (!user) res.status(401).json({ message: "User not found" });
