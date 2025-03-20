@@ -15,7 +15,7 @@ export interface LoginDto {
 
 export interface CustomRequest extends Request {
   user?: {
-    id: number;
+    id: string;
     email: string;
     role: string;
   };
