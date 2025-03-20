@@ -25,6 +25,16 @@ const options = {
         url: getServerUrl(),
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }], // Apply security globally
   },
   apis: ["**/*.ts"],
 };
