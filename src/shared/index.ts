@@ -25,3 +25,12 @@ export interface CollectionDto {
   name: string;
   description?: string;
 }
+
+export interface JournalDto {
+  title: string;
+  content: string;
+  mood: string;
+  moodScore: number;
+  moodQuery?: string;
+  collectionId?: string;
+}
