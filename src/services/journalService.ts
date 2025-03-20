@@ -117,12 +117,16 @@ export class JournalService {
   }
   // update journal
 
-  static async updateJournalEntry(userId: string, journal: JournalDto) {
+  static async updateJournalEntry(
+    userId: string,
+    journalId: string,
+    journal: JournalDto
+  ) {
     await checkUser(userId);
     // Check if entry exists and belongs to user
     const existingEntry = await prisma.journalEntry.findFirst({
       where: {
-        id: journal.id,
+        id: journalId,
         userId: userId,
       },
     });
@@ -140,7 +144,7 @@ export class JournalService {
 
     // Update the entry
     const updatedEntry = await prisma.journalEntry.update({
-      where: { id: journal.id },
+      where: { id: journalId },
       data: {
         title: journal.title,
         content: journal.content,

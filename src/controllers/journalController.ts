@@ -64,4 +64,18 @@ export class JournalController {
       res.status(500).json({ error: error.message });
     }
   }
+  static async updateJournalEntry(req: CustomRequest, res: Response) {
+    try {
+      const journalData = req.body;
+      const updatedEntry = await JournalService.updateJournalEntry(
+        req.user.id,
+        req.params.journalId,
+        journalData
+      );
+      res.status(200).json({ updatedEntry });
+    } catch (error) {
+      console.error("error", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
 }

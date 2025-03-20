@@ -29,4 +29,9 @@ journalRouter.delete(
   authenticateUser,
   JournalController.deleteJournalEntry
 );
+journalRouter.patch(
+  "/:journalId",
+  authenticateUser,
+  JournalController.updateJournalEntry
+);
 export default journalRouter;
