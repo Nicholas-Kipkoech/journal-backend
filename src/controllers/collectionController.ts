@@ -21,4 +21,13 @@ export class CollectionController {
       res.status(500).json({ error: error.message });
     }
   }
+  static async getCollections(req: CustomRequest, res: Response) {
+    try {
+      const collections = await CollectionService.getCollections(req.user.id);
+      res.status(200).json({ collections });
+    } catch (error) {
+      console.error("error", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
 }

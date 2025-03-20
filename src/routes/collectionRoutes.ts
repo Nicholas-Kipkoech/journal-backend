@@ -5,9 +5,15 @@ import { CollectionController } from "../controllers/collectionController";
 const collectionRouter = Router();
 
 collectionRouter.post(
-  "/add",
+  "/",
   authenticateUser,
   CollectionController.addCollection
+);
+
+collectionRouter.get(
+  "/",
+  authenticateUser,
+  CollectionController.getCollections
 );
 
 export default collectionRouter;
