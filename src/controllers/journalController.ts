@@ -24,4 +24,44 @@ export class JournalController {
     }
   }
   // fetch all existings journal, you can also fetch by collection id
+
+  static async getAllJournalEntries(req: CustomRequest, res: Response) {
+    try {
+      const { collectionId } = req.body;
+      const journalEntries = await JournalService.getAllJournalEntries(
+        req.user.id,
+        collectionId
+      );
+      res.status(200).json({ journalEntries });
+    } catch (error) {
+      console.error("error fetching journals", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  // get journal by id
+  static async getJournalEntryById(req: CustomRequest, res: Response) {
+    try {
+      const { journalId } = req.params;
+      const journalEntry = await JournalService.getJournalEntryById(
+        req.user.id,
+        journalId
+      );
+      res.status(200).json({ journalEntry });
+    } catch (error) {
+      console.error("error", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async deleteJournalEntry(req: CustomRequest, res: Response) {
+    try {
+      const { journalId } = req.params;
+      await JournalService.deleteJournalEntry(req.user.id, journalId);
+      res.status(200).json({ message: "Journal deleted successfully" });
+    } catch (error) {
+      console.error("error", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
 }

@@ -115,4 +115,41 @@ export class JournalService {
       },
     });
   }
+  // update journal
+
+  static async updateJournalEntry(userId: string, journal: JournalDto) {
+    await checkUser(userId);
+    // Check if entry exists and belongs to user
+    const existingEntry = await prisma.journalEntry.findFirst({
+      where: {
+        id: journal.id,
+        userId: userId,
+      },
+    });
+
+    if (!existingEntry) throw new Error("Journal entry not found");
+    // Get mood data
+    const mood = MOODS[journal.mood.toUpperCase()];
+    if (!mood) throw new Error("Invalid mood");
+
+    // Get new mood image if mood changed
+    let moodImageUrl = existingEntry.moodImageUrl;
+    if (existingEntry.mood !== mood.id) {
+      moodImageUrl = await getPixabayImage(journal.moodQuery);
+    }
+
+    // Update the entry
+    const updatedEntry = await prisma.journalEntry.update({
+      where: { id: journal.id },
+      data: {
+        title: journal.title,
+        content: journal.content,
+        mood: mood.id,
+        moodScore: mood.score,
+        moodImageUrl,
+        collectionId: journal.collectionId || null,
+      },
+    });
+    return updatedEntry;
+  }
 }

@@ -27,8 +27,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/collection", collectionRouter);
-app.use("/journal", journalRouter);
+app.use("/collections", collectionRouter);
+app.use("/journals", journalRouter);
 
 connectDB().then(() => {
   app.listen(PORT, () =>
