@@ -3,6 +3,7 @@ import express from "express";
 import { prisma } from "../prisma/client";
 import authRouter from "./routes/authRoutes";
 import collectionRouter from "./routes/collectionRoutes";
+import journalRouter from "./routes/journalRoutes";
 const app = express();
 
 config();
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/collection", collectionRouter);
+app.use("/journal", journalRouter);
 
 connectDB().then(() => {
   app.listen(PORT, () =>
