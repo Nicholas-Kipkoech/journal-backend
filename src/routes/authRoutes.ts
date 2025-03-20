@@ -4,7 +4,7 @@ import {
   registerValidation,
 } from "../validations/authValidation";
 import { AuthController } from "../controllers/authController";
-import { authenticateUser, authorizeRole } from "../middleware/authMiddleware";
+import { authenticateUser } from "../middleware/authMiddleware";
 
 const authRouter = Router();
 
