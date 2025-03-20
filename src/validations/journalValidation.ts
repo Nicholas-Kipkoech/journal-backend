@@ -5,6 +5,5 @@ export const journalValidation = [
   body("content").notEmpty().withMessage("journal content required"),
   body("mood").notEmpty().withMessage("journal mood required"),
   body("collectionId").optional(),
-  body("moodScore").optional(),
   body("moodQuery").optional(),
 ];

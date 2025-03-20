@@ -23,4 +23,5 @@ export class JournalController {
       res.status(500).json({ error: error.message });
     }
   }
+  // fetch all existings journal, you can also fetch by collection id
 }
