@@ -33,7 +33,7 @@ export class AuthService {
     const user = await prisma.user.findUnique({
       where: { email: loginDto.email },
     });
-    if (!user) throw new Error("Invalid email entered");
+    if (!user) throw new Error("User not found");
 
     // check if password is valid
     const isMatch = await checkPassword(loginDto.password, user.password);
