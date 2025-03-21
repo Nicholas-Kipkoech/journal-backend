@@ -27,7 +27,7 @@ export class JournalController {
 
   static async getAllJournalEntries(req: CustomRequest, res: Response) {
     try {
-      const { collectionId } = req.body;
+      const { collectionId }: string | any = req.query;
       const journalEntries = await JournalService.getAllJournalEntries(
         req.user.id,
         collectionId
