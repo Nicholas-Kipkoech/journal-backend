@@ -32,6 +32,9 @@ export class AnalyticsService {
       orderBy: {
         createdAt: "asc",
       },
+      include: {
+        collection: true,
+      },
     });
 
     // Process entries for analytics
