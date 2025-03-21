@@ -32,7 +32,7 @@ export class JournalController {
         req.user.id,
         collectionId
       );
-      res.status(200).json({ journalEntries });
+      res.status(200).json(journalEntries);
     } catch (error) {
       console.error("error fetching journals", error);
       res.status(500).json({ error: error.message });
