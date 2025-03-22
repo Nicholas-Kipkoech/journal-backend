@@ -90,6 +90,7 @@ authRouter.post("/register", registerValidation, AuthController.register);
  */
 
 authRouter.post("/login", loginValidation, AuthController.login);
+authRouter.patch("/update", authenticateUser, AuthController.updateUser);
 
 /**
  * @openapi

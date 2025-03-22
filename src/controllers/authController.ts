@@ -34,6 +34,17 @@ export class AuthController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  // update user
+
+  static async updateUser(req: CustomRequest, res: Response) {
+    try {
+      const updatedUser = await AuthService.updateUser(req.user.id, req.body);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   // fetch logged in user profile
   static async getMe(req: CustomRequest, res: Response) {
     try {
@@ -41,7 +52,7 @@ export class AuthController {
       if (!user) res.status(404).json({ message: "User not found" });
       res.json(user);
     } catch (error) {
-      res.status(500).json({ message: "Server error", error });
+      res.status(500).json({ error: error.message });
     }
   }
 }

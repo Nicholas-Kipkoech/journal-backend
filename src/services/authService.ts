@@ -82,7 +82,6 @@ export class AuthService {
         data: {
           firstName: userData.firstName,
           lastName: userData.lastName,
-          email: userData.email,
           password: hashedpassword,
         },
       });
