@@ -3,8 +3,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../prisma/client";
 
 interface TokenPayload extends JwtPayload {
-  userId: string;
-  email: string;
+  user: {
+    id: string;
+    email: string;
+  };
 }
 
 export const authenticateUser = async (
@@ -32,7 +34,7 @@ export const authenticateUser = async (
 
     // Check if user exists
     const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
+      where: { id: decoded.user.id },
     });
 
     if (!user) {
