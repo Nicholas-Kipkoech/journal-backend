@@ -76,14 +76,19 @@ export class AuthService {
 
   static async updateUser(userId: string, userData: Partial<UserDto>) {
     try {
-      const hashedpassword = await hashPassword(userData.password);
+      const updateData: Partial<UserDto> = {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+      };
+      // only hash and update password if it is provided
+
+      if (userData.password) {
+        updateData.password = await hashPassword(userData.password);
+      }
+
       const updatedUser = await prisma.user.update({
         where: { id: userId },
-        data: {
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          password: hashedpassword,
-        },
+        data: updateData,
       });
       return updatedUser;
     } catch (error) {
