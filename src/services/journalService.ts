@@ -96,6 +96,8 @@ export class JournalService {
     if (!journalEntry) throw new Error("Journal entry not found");
 
     await prisma.journalEntry.delete({ where: { id: journalId } });
+    // also delete the insights
+    await prisma.journalInsight.delete({ where: { entryId: journalId } });
   }
 
   // Update an existing journal entry
