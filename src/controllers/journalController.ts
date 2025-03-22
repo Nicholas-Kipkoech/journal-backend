@@ -15,9 +15,7 @@ export class JournalController {
         req.user.id,
         journalData
       );
-      res
-        .status(200)
-        .json({ message: "Journal added successfully", data: newJournal });
+      res.status(200).json(newJournal);
     } catch (error) {
       console.error("error adding journal", error);
       res.status(500).json({ error: error.message });
