@@ -16,4 +16,10 @@ collectionRouter.get(
   CollectionController.getCollections
 );
 
+collectionRouter.delete(
+  "/",
+  authenticateUser,
+  CollectionController.deleteCollection
+);
+
 export default collectionRouter;
