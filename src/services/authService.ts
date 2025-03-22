@@ -39,11 +39,19 @@ export class AuthService {
     const isMatch = await checkPassword(loginDto.password, user.password);
     if (!isMatch) throw new Error("Invalid password entered");
 
+    // Pass only safe fields to token generator
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+    };
+
     // generate JWT token for logged in user
-    const token = generateToken(user.id, user.email);
+    const token = generateToken(tokenPayload);
     return {
       token,
-      user: { id: user.id, email: user.email, firstName: user.firstName },
     };
   }
   /**
