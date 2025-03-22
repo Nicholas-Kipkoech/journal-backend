@@ -72,7 +72,7 @@ export class JournalController {
         req.params.journalId,
         journalData
       );
-      res.status(200).json({ updatedEntry });
+      res.status(200).json(updatedEntry);
     } catch (error) {
       console.error("error", error);
       res.status(500).json({ error: error.message });
