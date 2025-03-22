@@ -40,6 +40,9 @@ export class AuthController {
   static async updateUser(req: CustomRequest, res: Response) {
     try {
       const updatedUser = await AuthService.updateUser(req.user.id, req.body);
+      res
+        .status(200)
+        .json({ message: "Profile updated successfully", updatedUser });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
