@@ -13,7 +13,7 @@ const authRouter = Router();
  * '/auth/register':
  *  post:
  *     tags:
- *     - User Registration
+ *     - Users management
  *     summary: create new user account
  *     requestBody:
  *       required: true
@@ -57,7 +57,7 @@ authRouter.post("/register", registerValidation, AuthController.register);
  * '/auth/login':
  *  post:
  *     tags:
- *     - User Login
+ *     - Users management
  *     summary: login into your account
  *     requestBody:
  *       required: true
@@ -90,6 +90,49 @@ authRouter.post("/register", registerValidation, AuthController.register);
  */
 
 authRouter.post("/login", loginValidation, AuthController.login);
+
+/**
+ * @openapi
+ * '/auth/update':
+ *  patch:
+ *     tags:
+ *     - Users management
+ *     summary: update user account
+ *     security:
+ *       - bearerAuth: []  # 👈 This enables Bearer Token authentication in Swagger
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - firstName
+ *               - lastName
+ *               - email
+ *
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *
+ *               lastName:
+ *                 type: string
+ *
+ *               email:
+ *                 type: string
+ *
+ *
+ *     responses:
+ *       200:
+ *         description: Fetched
+ *       409:
+ *         description: Conflict
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
+ */
+
 authRouter.patch("/update", authenticateUser, AuthController.updateUser);
 
 /**
@@ -97,7 +140,7 @@ authRouter.patch("/update", authenticateUser, AuthController.updateUser);
  * '/auth/profile':
  *  get:
  *     tags:
- *     - User profile
+ *     - Users management
  *     summary: Get own data
  *     security:
  *       - bearerAuth: []  # 👈 This enables Bearer Token authentication in Swagger
