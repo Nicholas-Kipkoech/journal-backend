@@ -1,5 +1,6 @@
 import { prisma } from "../../prisma/client";
 import { LoginDto, UserDto } from "../shared";
+import { checkUser } from "../utils/checkUser";
 import { generateToken } from "../utils/jwtHelper";
 import { checkPassword, hashPassword } from "../utils/passwordHelper";
 
@@ -76,6 +77,7 @@ export class AuthService {
 
   static async updateUser(userId: string, userData: Partial<UserDto>) {
     try {
+      await checkUser(userId);
       const updateData: Partial<UserDto> = {
         firstName: userData.firstName,
         lastName: userData.lastName,

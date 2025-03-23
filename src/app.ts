@@ -36,13 +36,21 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-app.use("/auth", authRouter);
-app.use("/collections", collectionRouter);
-app.use("/journals", journalRouter);
-app.use("/analytics", analyticsRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/collections", collectionRouter);
+app.use("/api/journals", journalRouter);
+app.use("/api/analytics", analyticsRouter);
 
-connectDB().then(() => {
-  app.listen(PORT, () =>
+let server: any;
+const startServer = async () => {
+  await connectDB();
+  server = app.listen(PORT, () =>
     console.log(`Server started listening at http://localhost:${PORT}`)
   );
-});
+};
+
+if (process.env.NODE_ENV !== "test") {
+  startServer();
+}
+
+export { app, server, prisma };

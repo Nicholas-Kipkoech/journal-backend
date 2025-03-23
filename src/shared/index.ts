@@ -29,8 +29,5 @@ export interface CollectionDto {
 export interface JournalDto {
   title: string;
   content: string;
-  mood: string;
-  moodScore: number;
-  moodQuery?: string;
   collectionId?: string;
 }

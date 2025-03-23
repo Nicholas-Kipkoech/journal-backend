@@ -38,7 +38,7 @@ export const authenticateUser = async (
     });
 
     if (!user) {
-      res.status(401).json({ message: "Unauthorized: User not found" });
+      res.status(403).json({ message: "Forbidden: User not found" });
       return;
     }
 
