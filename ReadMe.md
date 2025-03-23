@@ -128,3 +128,65 @@ flowchart TD;
   API -->|Analyze Trends| AI
   API -->|Return Insights| User
 ```
+
+### 8. Security Measures Beyond Basic Authentication
+
+1. Authentication & Authorization
+
+- JWT + Refresh Tokens
+- Role-Based Access Control (RBAC) for admin and user permissions.
+
+2. Data Security
+
+- Encryption: Hash passwords using bcrypt.
+
+### 9. Potential Scaling Challenges & Solutions
+
+#### 1. Potential bottlenecks and how I would address them
+
+| Challenge          | solution                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| High Read Traffic  | Use Redis caching for frequently accessed journal entries.                         |
+| High Write Traffic | Use PostgreSQL read replicas or sharding.                                          |
+| Slow Queries       | Index search-heavy columns (created_at, user_id). Use PostgreSQL Full-Text Search. |
+| API Scaling        | Deploy horizontal scaling with Kubernetes.                                         |
+
+#### 2. Scaling to 1M+ Users
+
+1. Database Optimization
+
+- Read Replicas: Scale PostgreSQL reads horizontally.
+
+- Partitioning: Split journal entries by time (monthly_partitions).
+
+- Eventual Consistency: Use message queues (e.g., Kafka, RabbitMQ).
+
+2. Backend Scaling
+
+- Kubernetes + Load Balancer to distribute API requests.
+
+- Node.js Worker Threads for background tasks.
+
+3. Frontend Optimization
+
+- Implement server-side rendering (SSR) with Next.js.
+
+- Use CDN for faster asset delivery.
+
+#### 3. Components That Might Need Redesign at Scale
+
+1. Database Architecture
+
+- Introduce sharding or multi-region replication for high availability.
+
+2. Queueing System
+
+- Use Kafka or RabbitMQ for asynchronous processing.
+
+3. Logging & Monitoring
+
+- Centralized logging using ELK Stack (Elasticsearch, Logstash, Kibana).
+
+4. Microservices
+
+- Split Auth, Journal Entries, Analytics into separate services.
