@@ -9,7 +9,7 @@ const sentimentAnalyzer = new Sentiment();
  */
 export async function analyzeSentiment(text: string): Promise<number> {
   const result = sentimentAnalyzer.analyze(text);
-  return Math.max(-1, Math.min(1, result.score / result.words.length)); // Normalize score
+  return Math.max(-1, Math.min(1, result.score / result.words.length)) || 0; // Normalize score
 }
 
 /**

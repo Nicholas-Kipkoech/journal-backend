@@ -15,6 +15,7 @@ export class JournalService {
 
     // Analyze sentiment for mood score
     const moodScore = await analyzeSentiment(content);
+    console.log("moodscore", moodScore);
     const mood = getMoodTrend(moodScore);
 
     // Extract themes for insights
@@ -32,7 +33,7 @@ export class JournalService {
         moodScore,
         moodImageUrl,
         userId,
-        collectionId: collectionId || null,
+        collectionId: collectionId || undefined,
         journalInsight: {
           create: {
             sentiment: moodScore,

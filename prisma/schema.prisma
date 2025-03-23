@@ -32,7 +32,7 @@ model JournalEntry {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   userId         String
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   journalInsight JournalInsight?
 }
 
@@ -40,7 +40,7 @@ model Collection {
   id             String         @id @default(uuid())
   name           String         @unique
   description    String?
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   journalEntries JournalEntry[]
   userId         String
   createdAt      DateTime       @default(now())

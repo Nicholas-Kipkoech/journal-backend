@@ -34,6 +34,7 @@ export class AnalyticsService {
       },
       include: {
         collection: true,
+        journalInsight: true,
       },
     });
 
@@ -59,6 +60,22 @@ export class AnalyticsService {
       entryCount: data.count,
     }));
 
+    // Extract and process themes
+    const themeFrequency: Record<string, number> = {};
+    entries.forEach((entry) => {
+      if (entry.journalInsight) {
+        entry.journalInsight.themes.forEach((theme: string) => {
+          themeFrequency[theme] = (themeFrequency[theme] || 0) + 1;
+        });
+      }
+    });
+
+    // Get the top 5 most frequent themes
+    const mostFrequentThemes = Object.entries(themeFrequency)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([theme]) => theme);
+
     // Calculate overall statistics
     const overallStats = {
       totalEntries: entries.length,
@@ -79,6 +96,7 @@ export class AnalyticsService {
           entries.length / (period === "7d" ? 7 : period === "15d" ? 15 : 30)
         ).toFixed(1)
       ),
+      mostFrequentThemes, // include themes in stats
     };
     return {
       data: { timeline: analyticsData, stats: overallStats, entries },
