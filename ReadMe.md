@@ -74,8 +74,6 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant Database
-    participant Storage
-    participant Cache
 
     User->>Frontend: Login/Register
     Frontend->>Backend: Send credentials (hashed password)
