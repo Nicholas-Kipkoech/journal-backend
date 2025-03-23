@@ -60,6 +60,12 @@ npx prisma generate
 npm run dev
 ```
 
+#### 4. Run tests
+
+```sh
+npm test -- --verbose
+```
+
 ### 5. Data model design and relationships
 
 Below is the database model design for our backend server. The relationship between different tables in the system.
