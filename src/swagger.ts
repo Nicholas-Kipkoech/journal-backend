@@ -7,7 +7,7 @@ config();
 
 // Utility function to build the server URL dynamically
 const getServerUrl = (): string => {
-  const baseUrl = `http://localhost:${process.env.PORT || 8080}`;
+  const baseUrl = `http://localhost:${process.env.PORT || 8080}/api`;
   return `${baseUrl}`;
 };
 
@@ -43,5 +43,5 @@ const specs = swaggerJSDoc(options);
 
 // Function to set up Swagger
 export function setupSwagger(app: Application): void {
-  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+  app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
 }
