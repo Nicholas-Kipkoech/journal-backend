@@ -60,19 +60,27 @@ npx prisma generate
 npm run dev
 ```
 
-#### 4. Run tests
+#### 5. Run tests
 
 ```sh
 npm test -- --verbose
 ```
 
-### 5. Data model design and relationships
+#### 6. Api Documentation
+
+```sh
+http://localhost:8080/api/docs
+```
+
+### 7. Data model design and relationships
 
 Below is the database model design for our backend server. The relationship between different tables in the system.
 
 ![database design](/assets/database_model.png)
 
-### 6. High-Level Architectural Design
+---
+
+### 8. High-Level Architectural Design
 
 ```mermaid
 sequenceDiagram
@@ -111,7 +119,9 @@ sequenceDiagram
 
 ```
 
-### 7. High-Level Architectural Flowchart
+---
+
+### 9. High-Level Architectural Flowchart
 
 ```mermaid
 flowchart TD;
@@ -135,7 +145,9 @@ flowchart TD;
   API -->|Return Insights| User
 ```
 
-### 8. Security Measures Beyond Basic Authentication
+---
+
+### 10. Security Measures Beyond Basic Authentication
 
 1. Authentication & Authorization
 
@@ -146,7 +158,9 @@ flowchart TD;
 
 - Encryption: Hash passwords using bcrypt.
 
-### 9. Potential Scaling Challenges & Solutions
+---
+
+### 11. Potential Scaling Challenges & Solutions
 
 #### 1. Potential bottlenecks and how I would address them
 
@@ -196,3 +210,5 @@ flowchart TD;
 4. Microservices
 
 - Split Auth, Journal Entries, Analytics into separate services.
+
+---
