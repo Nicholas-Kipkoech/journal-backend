@@ -36,7 +36,7 @@ export class CollectionController {
   // Delete user collections based on collection id
   static async deleteCollection(req: CustomRequest, res: Response) {
     try {
-      const { collectionId }: string | any = req.query;
+      const { collectionId } = req.params;
       if (!collectionId) {
         res.status(400).json({ message: "Collection ID is required!!" });
       }
