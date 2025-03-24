@@ -21,7 +21,7 @@ npm install
 DATABASE_URL="postgresql://user:password@localhost:5432/journal_db"
 JWT_SECRET="your_secret_key"
 PORT= 8080
-PIXABAY_API_KEY="YOUR PIXABAY API KEY" # This is free, use for image generation based on moods
+PIXABAY_API_KEY="20524560-a948ec896d1e8c0b8ba1135a6" # This is free, use for image generation based on moods
 ```
 
 Replace:
