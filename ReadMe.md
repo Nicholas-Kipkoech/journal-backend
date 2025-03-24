@@ -212,3 +212,7 @@ flowchart TD;
 - Split Auth, Journal Entries, Analytics into separate services.
 
 ---
+
+### 12. Technical Log
+
+Kindly read this technical log:[technical log](/technical_decision_log.md)
